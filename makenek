@@ -3,18 +3,20 @@
 # (c) 2008,2009,2010 UCHICAGO ARGONNE, LLC
 
 # source path 
-SOURCE_ROOT="../nek5_1107/trunk/nek" 
-SOURCE_ROOT2="$SOURCE_ROOT/cmt" 
+SOURCE_ROOT="$NEK_SRC" 
+SOURCE_ROOT_CORE="$SOURCE_ROOT/core"
+SOURCE_ROOT_JL="$SOURCE_ROOT/jl"
+SOURCE_ROOT_CMT="$SOURCE_ROOT/core/cmt"
 
 # Fortran compiler
-F77="mpif77"
+F77="ftn"
 
 # C compiler
-CC="mpicc"
+CC="cc"
 
 # pre-processor symbol list 
 # (set PPLIST=? to get a list of available symbols)
-#PPLIST="?" 
+#PPLIST="XSMM" 
 
 # plug-in list
 #PLUGIN_LIST=""
@@ -36,18 +38,18 @@ CC="mpicc"
 USR="IO_tools.o uparam.o chkpoint.o"
 
 # linking flags
-#USR_LFLAGS="-L/usr/lib -lfoo"
+#USR_LFLAGS="-L/home/mschanen/git/libxsmm/lib -lxsmm"
 
 
 # generic compiler flags
 #G="-g"
 
 # optimization flags
-#OPT_FLAGS_STD=""
-#OPT_FLAGS_MAG=""
+OPT_FLAGS_STD="-O3 -xMIC-AVX512"
+OPT_FLAGS_MAG="-O3 -xMIC-AVX512"
 
 # enable AMG coarse grid solver (default XXT)
-#IFAMG="true"
+IFAMG="true"
 #IFAMG_DUMP="true"
 
 # CVODE path
@@ -83,10 +85,12 @@ mver=1
 if [ -d $2 ] && [ $# -eq 2 ]; then
   SOURCE_ROOT="$2"
   echo "change source code directory to: ", $SOURCE_ROOT
-  SOURCE_ROOT2="$SOURCE_ROOT/cmt" 
+  SOURCE_ROOT_CORE="$SOURCE_ROOT/core"
+  SOURCE_ROOT_JL="$SOURCE_ROOT/jl"
+  SOURCE_ROOT_CMT="$SOURCE_ROOT/core/cmt"
 fi
 # do some checks and create makefile
-source $SOURCE_ROOT/makenek.inc
+source $SOURCE_ROOT_CORE/makenek.inc
 # compile
 make -j4 -f makefile 2>&1 | tee compiler.out
 exit 0
