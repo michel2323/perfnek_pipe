@@ -16,3 +16,5 @@
      $     VXLAGP, VYLAGP, VZLAGP, PRLAGP, TLAGP,
      $     EXX1P, EXY1P, EXZ1P, EXX2P, EXY2P, EXZ2P,
      $     VGRADT1P, VGRADT2P
+
+      real  p0th, dp0thdt, gamma0
